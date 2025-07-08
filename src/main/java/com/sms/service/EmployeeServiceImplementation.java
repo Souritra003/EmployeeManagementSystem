@@ -34,18 +34,19 @@ public class EmployeeServiceImplementation implements EmployeeService{
 
 	@Override
 	public String updateEmployee(Employee employee, Long id) {
-		// TODO Auto-generated method stub
-		Employee emp=employeeRepository.findById(id).get();
-		if(emp!=null)
-		{
-			emp.setFirstName(employee.getFirstName());
-			emp.setLastName(employee.getLastName());
-			emp.setEmailId(employee.getEmailId());
-			emp.setDepartment(employee.getDepartment());
-			employeeRepository.save(emp);
-			return "Data updated successfully";
-		}
-		return "Updation Failed";
+	    Optional<Employee> optionalEmp = employeeRepository.findById(id);
+	    
+	    if (optionalEmp.isPresent()) {
+	        Employee emp = optionalEmp.get();
+	        emp.setFirstName(employee.getFirstName());
+	        emp.setLastName(employee.getLastName());
+	        emp.setEmailId(employee.getEmailId());
+	        emp.setDepartment(employee.getDepartment());
+	        employeeRepository.save(emp);
+	        return "Data updated successfully";
+	    }
+	    
+	    return "Updation Failed: Employee with ID " + id + " not found";
 	}
 
 	@Override
